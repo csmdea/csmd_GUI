@@ -1,29 +1,20 @@
-import tkinter
-import sys
+import tkinter as tk
+from tkinter import ttk
 
-window = tkinter.Tk()
+def open_page2():
+    subprocess.Popen(["python", "page2.py"])
+    window.destroy()
 
-window.title("TEST")
-window.attributes("-fullscreen", True)
-window['bg'] = '#FFFFFF'
+window = tk.Tk()
 
-count = 0
+style = ttk.Style()
+style.configure("Custom.TButton",
+                foreground="white",
+                background="blue",
+                font=("Arial", 12),
+                padding=10)
 
-def countUP():
-    global count
-    count += 1
-    label.config(text=str(count))
-
-def exitApp(event):
-    sys.exit()
-
-label = tkinter.Label(window, text="파이썬", width=10, height=5, fg="red", relief="solid")
-label.pack()
-
-button = tkinter.Button(window, text="click", overrelief="solid", width=15, command=countUP, repeatdelay=1000, repeatinterval=100)
+button = ttk.Button(window, text="화면 전환", style="Custom.TButton", command=open_page2)
 button.pack()
-
-# 'ESC' 키를 눌렀을 때 exitApp 함수가 호출되도록 바인딩합니다.
-window.bind('<Escape>', exitApp)
 
 window.mainloop()
