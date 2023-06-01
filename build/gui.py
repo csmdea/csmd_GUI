@@ -8,11 +8,34 @@ from pathlib import Path
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+import requests
+import json
 
+
+#발행한 토큰 불러오기
+with open("/home/min/tkinter/build/kakao_code.json","r") as kakao:
+    tokens = json.load(kakao)
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"/home/min/tkinter/build/assets/frame0")
 
+url="https://kapi.kakao.com/v2/api/talk/memo/default/send"
+
+headers={
+    "Authorization" : "Bearer " + tokens["access_token"]
+}
+
+data = {
+       'object_type': 'text',
+       'text': '1번 키오스크입니다',
+       'link': {
+           'web_url': 'https://developers.kakao.com',
+           'mobile_web_url': 'https://developers.kakao.com'
+       },
+       'button_title': '키워드'
+   }
+
+data = {'template_object': json.dumps(data)}
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -21,6 +44,9 @@ def click():
     window.destroy()
     import page1
 
+def kakaotalk():
+    response = requests.post(url, headers=headers, data=data)
+    response.status_code
 window = Tk()
 
 window.geometry("800x480")
@@ -85,7 +111,7 @@ button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=kakaotalk,
     relief="flat"
 )
 button_3.place(
